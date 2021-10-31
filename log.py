@@ -30,3 +30,43 @@ class Log:
         handler.setFormatter(formatter)
 
         return handler
+
+    def debug(self, message: str):
+
+        """
+        デバックレベルログを出力
+        message: str エラーメッセージ
+        """
+
+        logger = self.createLogger()
+        logger.debug(message)
+
+    def info(self, message: str):
+
+        """
+        インフォレベルログを出力
+        message: str エラーメッセージ
+        """
+
+        logger = self.createLogger()
+        logger.info(message)
+
+    def warn(self, message: str):
+
+        """
+        ワーニングレベルログを出力
+        message: str エラーメッセージ
+        """
+
+        logger = self.createLogger()
+        logger.warn(message)
+
+    def error(self, message: str):
+
+        """
+        エラーレベルログを出力
+        message: str エラーメッセージ
+        """
+
+        logger = self.createLogger()
+        logger.error(message)
