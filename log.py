@@ -46,12 +46,12 @@ class Log:
         """
 
         config = configparser.ConfigParser()
-        configPath = 'config.ini'
+        configPath = './Log/config.ini'
 
         if not os.path.exists(configPath):
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), configPath)
 
-        config.read('config.ini', encoding='utf-8')
+        config.read(configPath, encoding='utf-8')
 
         logMode = config.get('LOG', 'MODE')
         logFile = config.get(self.logFileSection, 'FILE')
