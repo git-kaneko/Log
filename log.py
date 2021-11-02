@@ -5,8 +5,9 @@ import errno
 
 class Log:
 
-    def __init__(self):
+    def __init__(self, logFileSection: str):
 
+        self.logFileSection = logFileSection
         self.logger = logging.getLogger(__name__)
         #handlerに渡すログの最低レベルを設定
         self.logger.setLevel(logging.DEBUG)
@@ -21,6 +22,7 @@ class Log:
         """
 
         logMode, logFile = self.readConfigfile()
+        handler = logging.FileHandler(logFile)
 
         if logMode == 'dev':
 
@@ -32,7 +34,6 @@ class Log:
             #出力するログの最低レベルを設定
             handler.setLevel(logging.INFO)
 
-        handler = logging.FileHandler(logFile)
         formatter = logging.Formatter('%(asctime)s %(levelname)s %(filename)s\n%(message)s')
         handler.setFormatter(formatter)
 
@@ -53,7 +54,7 @@ class Log:
         config.read('config.ini', encoding='utf-8')
 
         logMode = config.get('LOG', 'MODE')
-        logFile = config.get('LOG', 'FILE')
+        logFile = config.get(self.logFileSection, 'FILE')
 
         return logMode, logFile
 
