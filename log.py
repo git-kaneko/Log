@@ -2,20 +2,14 @@ import logging
 
 class Log:
 
-    def createLogger(self) -> object:
+    def __init__(self):
 
-        """
-        logger生成関数
-        """
-
-        logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger(__name__)
         #handlerに渡すログの最低レベルを設定
-        logger.setLevel(logging.DEBUG)
+        self.logger.setLevel(logging.DEBUG)
 
-        handler = self.setHandler()
-        logger.addHandler(handler)
-
-        return logger
+        self.handler = self.setHandler()
+        self.logger.addHandler(self.handler)
 
     def setHandler(self) -> object:
 
