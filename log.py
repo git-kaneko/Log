@@ -60,3 +60,12 @@ class Log:
         """
 
         self.logger.error(message)
+
+    def critical(self, message: str):
+
+        """
+        クリティカルレベルログを出力
+        message: str エラーメッセージ
+        """
+
+        self.logger.critical(message)
