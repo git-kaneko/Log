@@ -1,4 +1,7 @@
 import logging
+import configparser
+import os
+import errno
 
 class Log:
 
@@ -17,13 +20,42 @@ class Log:
         ハンドラーに各設定を追加
         """
 
-        handler = logging.StreamHandler()
-        #出力するログの最低レベルを設定
-        handler.setLevel(logging.DEBUG)
-        formatter = logging.Formatter('%(asctime)s %(levelname)s %(filename)s Line:%(lineno)s\n%(message)s')
+        logMode, logFile = self.readConfigfile()
+
+        if logMode == 'dev':
+
+            #出力するログの最低レベルを設定
+            handler.setLevel(logging.DEBUG)
+        
+        else:
+
+            #出力するログの最低レベルを設定
+            handler.setLevel(logging.INFO)
+
+        handler = logging.FileHandler(logFile)
+        formatter = logging.Formatter('%(asctime)s %(levelname)s %(filename)s\n%(message)s')
         handler.setFormatter(formatter)
 
         return handler
+
+    def readConfigfile(self):
+
+        """
+        コンフィグファイルを読み込む
+        """
+
+        config = configparser.ConfigParser()
+        configPath = 'config.ini'
+
+        if not os.path.exists(configPath):
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), configPath)
+
+        config.read('config.ini', encoding='utf-8')
+
+        logMode = config.get('LOG', 'MODE')
+        logFile = config.get('LOG', 'FILE')
+
+        return logMode, logFile
 
     def debug(self, message: str):
 
