@@ -32,8 +32,7 @@ class Log:
         message: str エラーメッセージ
         """
 
-        logger = self.createLogger()
-        logger.debug(message)
+        self.logger.debug(message)
 
     def info(self, message: str):
 
@@ -42,8 +41,7 @@ class Log:
         message: str エラーメッセージ
         """
 
-        logger = self.createLogger()
-        logger.info(message)
+        self.logger.info(message)
 
     def warn(self, message: str):
 
@@ -52,8 +50,7 @@ class Log:
         message: str エラーメッセージ
         """
 
-        logger = self.createLogger()
-        logger.warn(message)
+        self.logger.warn(message)
 
     def error(self, message: str):
 
@@ -62,5 +59,4 @@ class Log:
         message: str エラーメッセージ
         """
 
-        logger = self.createLogger()
-        logger.error(message)
+        self.logger.error(message)
