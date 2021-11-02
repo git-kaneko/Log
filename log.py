@@ -20,7 +20,7 @@ class Log:
         handler = logging.StreamHandler()
         #出力するログの最低レベルを設定
         handler.setLevel(logging.DEBUG)
-        formatter = logging.Formatter('%(asctime)s %(levelname)s %(module)s Line:%(lineno)s\n%(message)s')
+        formatter = logging.Formatter('%(asctime)s %(levelname)s %(filename)s Line:%(lineno)s\n%(message)s')
         handler.setFormatter(formatter)
 
         return handler
