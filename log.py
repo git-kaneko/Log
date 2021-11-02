@@ -46,7 +46,7 @@ class Log:
         """
 
         config = configparser.ConfigParser()
-        configPath = './Log/config.ini'
+        configPath = os.path.dirname(__file__) + '/config.ini'
 
         if not os.path.exists(configPath):
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), configPath)
