@@ -6,8 +6,9 @@ import json
 
 class Log:
 
-    def __init__(self, logFileSection: str):
+    def __init__(self, logFileSection: str, myFileName: str):
 
+        self.myFileName = myFileName
         self.logFileSection = logFileSection
         self.logger = logging.getLogger(__name__)
         #handlerに渡すログの最低レベルを設定
@@ -35,7 +36,7 @@ class Log:
             #出力するログの最低レベルを設定
             handler.setLevel(logging.INFO)
 
-        formatter = logging.Formatter('%(asctime)s %(levelname)s %(filename)s\n%(message)s')
+        formatter = logging.Formatter('%(asctime)s %(levelname)s {}\n%(message)s'.format(self.myFileName))
         handler.setFormatter(formatter)
 
         return handler
