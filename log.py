@@ -2,6 +2,7 @@ import logging
 import configparser
 import os
 import errno
+import json
 
 class Log:
 
@@ -45,16 +46,16 @@ class Log:
         コンフィグファイルを読み込む
         """
 
-        config = configparser.ConfigParser()
-        configPath = os.path.dirname(__file__) + '/config.ini'
+        configPath = os.path.dirname(__file__) + '/settings.json'
 
         if not os.path.exists(configPath):
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), configPath)
 
-        config.read(configPath, encoding='utf-8')
+        with open(configPath, 'r') as f:
+            config = json.load(f)
 
-        logMode = config.get('LOG', 'MODE')
-        logFile = config.get(self.logFileSection, 'FILE')
+        logMode = config['MODE']
+        logFile = config[self.logFileSection]['FILE']
 
         return logMode, logFile
 
