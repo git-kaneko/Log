@@ -36,3 +36,20 @@
   ```
 
   FILE: ログファイル出力先
+
+- 使い方
+  
+  任意のディレクトリでcloneしてくる
+
+  ログを出力するプログラムでimportする<br>
+  import出来たらLogクラスからLogインスタンスを作成する<br>
+  Logクラスの引数は、[ 各ログファイルのセクション, \_\_file\_\_ ]
+
+  ログを出力する際は、logger.ログレベル(メッセージ) で出力できる
+  ```python
+  from Log.log import Log
+
+  logger = Log('TEST', __file__)
+
+  logger.info('インフォメッセージ')
+  ```
