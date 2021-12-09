@@ -10,7 +10,7 @@ class Log:
 
         self.myFileName = myFileName
         self.logFileSection = logFileSection
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger(myFileName)
         #handlerに渡すログの最低レベルを設定
         self.logger.setLevel(logging.DEBUG)
 
