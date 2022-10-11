@@ -1,42 +1,45 @@
 import logging
-import configparser
+from logging.handlers import TimedRotatingFileHandler
 import os
 import errno
 import json
 
 class Log:
 
-    def __init__(self, logFileSection: str, myFileName: str):
+    """
+    python logging wrapper class
+    """
 
-        self.myFileName = myFileName
-        self.logFileSection = logFileSection
-        self.logger = logging.getLogger(myFileName)
-        #handlerに渡すログの最低レベルを設定
-        self.logger.setLevel(logging.DEBUG)
+    def __init__(self, logFileSection: str, fileName: str) -> None:
+        self.logFileSection: str = logFileSection
+        self.fileName: str = fileName
+        self.logger = self.createLogger()
 
-        self.handler = self.setHandler()
-        self.logger.addHandler(self.handler)
+    def createLogger(self):
+        logger = logging.getLogger(self.fileName)
+        #出力するログの最低レベルを設定
+        logger.setLevel(logging.DEBUG)
+        handler = self.setHandler()
+        logger.addHandler(handler)
+        return logger
 
-    def setHandler(self) -> object:
+    def setHandler(self):
 
         """
         ハンドラーに各設定を追加
         """
 
-        logMode, logFile = self.readConfigfile()
-        handler = logging.FileHandler(logFile)
+        logFile = self.readConfigfile()
+        # 日ごとにローテーションする設定
+        handler = TimedRotatingFileHandler(
+            logFile,
+            when='midnight',
+            backupCount=0,
+            interval=7,
+            encoding='utf-8'
+        )
 
-        if logMode == 'dev':
-
-            #出力するログの最低レベルを設定
-            handler.setLevel(logging.DEBUG)
-        
-        else:
-
-            #出力するログの最低レベルを設定
-            handler.setLevel(logging.INFO)
-
-        formatter = logging.Formatter('%(asctime)s %(levelname)s {}\n%(message)s'.format(self.myFileName))
+        formatter = logging.Formatter('%(asctime)s %(levelname)s {}\n%(message)s'.format(self.fileName))
         handler.setFormatter(formatter)
 
         return handler
@@ -47,7 +50,7 @@ class Log:
         コンフィグファイルを読み込む
         """
 
-        configPath = os.path.dirname(__file__) + '/settings.json'
+        configPath: str = os.path.dirname(__file__) + '/settings.json'
 
         if not os.path.exists(configPath):
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), configPath)
@@ -55,12 +58,11 @@ class Log:
         with open(configPath, 'r') as f:
             config = json.load(f)
 
-        logMode = config['MODE']
         logFile = config[self.logFileSection]['FILE']
 
-        return logMode, logFile
+        return logFile
 
-    def debug(self, message: str):
+    def debug(self, message: str) -> None:
 
         """
         デバックレベルログを出力
@@ -69,7 +71,7 @@ class Log:
 
         self.logger.debug(message)
 
-    def info(self, message: str):
+    def info(self, message: str) -> None:
 
         """
         インフォレベルログを出力
@@ -78,7 +80,7 @@ class Log:
 
         self.logger.info(message)
 
-    def warn(self, message: str):
+    def warn(self, message: str) -> None:
 
         """
         ワーニングレベルログを出力
@@ -87,7 +89,7 @@ class Log:
 
         self.logger.warn(message)
 
-    def error(self, message: str):
+    def error(self, message: str) -> None:
 
         """
         エラーレベルログを出力
@@ -96,7 +98,7 @@ class Log:
 
         self.logger.error(message)
 
-    def critical(self, message: str):
+    def critical(self, message: str) -> None:
 
         """
         クリティカルレベルログを出力
